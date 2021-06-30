@@ -13,7 +13,13 @@ int main(){
     // cout<<"删除第i个值\n";
     // deleteByNum(l, 1);
     showLinkList(l);
-    cout<<getLength(l)<<endl;
+    // cout<<getLength(l)<<endl;
+    // Linklist rv = reverseLink1(l);
+    // showLinkList(rv);
+    reverseLink2(l);
+    showLinkList(l);
+    deleteSameWithNode(l, 3);
+    showLinkList(l);
     
     return 0;
 }

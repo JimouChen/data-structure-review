@@ -1,28 +1,20 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-#define maxsize 50
-typedef struct {
-    int data[maxsize];
-    int length;
-} LinearList;
-void showList(LinearList l) {
-    for (int i = 0; i < l.length; i++) {
-        cout << l.data[i] << " ";
+bool isPalindrome(int x) {
+    if (x < 0) return false;
+    string temp = to_string(x);
+    int len = temp.size();
+    int i = 0;
+    while (i <= int(len / 2)) {
+        if (temp[i] != temp[len - i - 1]) return false;
+        i++;
     }
-    cout << endl;
+    return true;
 }
-
-void initList(LinearList &l) { l.length = 0; }
-
-int getLength(LinearList l) { return l.length; }
-
 int main() {
-    LinearList l;
-    initList(l);
-    for (int i = 0; i < 10; i++) {
-        l.data[i] = i + 1;
-    }
-
+    int a = 233;
+    string aa = to_string(a);
+    cout<<isPalindrome(123);
+  
     return 0;
 }

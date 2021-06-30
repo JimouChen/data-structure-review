@@ -124,3 +124,46 @@ void showLinkList(Linklist l) {
     }
     cout << endl;
 }
+
+//链表的逆置,造一个新链表
+Linklist reverseLink1(Linklist l) {
+    Linklist rv = (Linklist)malloc(sizeof(LNode));
+    rv->next = NULL;
+    LNode *p = l->next;
+
+    while (p) {  //头插法
+        LNode *temp = (LNode *)malloc(sizeof(LNode));
+        temp->data = p->data;
+        temp->next = rv->next;
+        rv->next = temp;
+        p = p->next;
+    }
+    return rv;
+}
+
+//逆置链表，原地逆置，不再创建另一个链表空间
+void reverseLink2(Linklist l) {
+    LNode *p = l->next, *q;
+    l->next = NULL;
+    while (p) {
+        q = p->next;
+        p->next = l->next;
+        l->next = p;
+        p = q;
+    }
+}
+//删除指定值
+void deleteSameWithNode(Linklist l, int x) {
+    LNode *temp = l->next, *pre = l;
+    while (temp) {
+        if (temp->data == x) {
+            LNode *s = temp;
+            pre->next = temp->next;
+            temp = temp->next;
+            free(s);
+        } else {
+            pre = temp;
+            temp = temp->next;
+        }
+    }
+}
