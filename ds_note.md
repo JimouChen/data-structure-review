@@ -18,3 +18,6 @@ typedef struct{
 } MyName;//直接就命名
 ```
 
+
+
+- 在队列中，入队操作只改变rear指针，不改变front指针
