@@ -21,3 +21,69 @@ typedef struct{
 
 
 - 在队列中，入队操作只改变rear指针，不改变front指针
+
+## 中缀表达式转后缀表达式算法
+先创建一个栈来存放不确定的运算符号
+- 遇到操作数，直接加入表达式，即直接输出
+- 遇到括号，如果是左括号就直接入栈，如果是右括号，就把栈运算符一直出栈加入表达式，直到把栈内的第一个左括号出栈，就停止。
+- 遇到运算符，就比较一下栈里面的运算符和当前运算符，如果栈内的优先级大于或者等于当前的，就把栈内的运算符出栈，否则就把当前的入栈，如果栈顶当前是括号，那也把当前的运算符入栈；
+如果当前是空栈或者是左括号，就直接把当前的运算符入栈。
+
+## 中缀表达式求值
+- 本质上就是中缀转后缀+后缀表达式求值的结合
+![](https://img2020.cnblogs.com/blog/2134757/202107/2134757-20210704190406920-1668156453.png)
+
+- 伪代码
+```c++
+//写一个比较符号栈和当前扫描到的运算符优先级的函数
+bool cmp(char op1, char op2){
+    if (op1的优先级 >= op2的优先级)return true;
+    return false;
+}
+
+int getValue(string s){
+    stack<int> numStack; 
+    stack<int> opStack; 
+    //扫描
+    for (int i = 0; i <= s.size(); i++){
+        if(当前是操作数，入栈)
+            numStack.push(s[i]);
+        else if(当前是左括号，入栈)
+            opStack.push(s[i]);
+        else if (当前是右括号){
+            //依次弹出符号栈的运算符，直到遇到左括号停止
+            while(opStack.top() != 对应的左括号){
+                char op = opStack.top();
+                opStack.pop();
+                //出栈2个操作数
+                int right = numStack.top();
+                numStack.pop();
+                int left = numStack.top();
+                numStack.pop();
+                //执行right op left，结果入栈
+                if (op == 对应的运算符'+-*/') 
+                    numStack.push(right op left);
+            }
+            //把左括号丢掉
+            opStack.pop();
+        }else if(当前是运算符){
+            char op2 = 当前运算符;
+            if (opStack.top() == 左括号 || opStack.empty())
+                opStack.push(op2);
+            else{
+                //比较栈中的运算符
+                char op1 = opStack.top();
+                if (cmp(op1, op2)){
+                    优先级高于当前的，依次弹出op1
+                    然后numStack出栈2个操作数
+                    //执行right op left，结果入栈
+                    numStack.push(right op left);
+            }
+        }
+
+    }
+    //返回操作数栈的最后一个数即是结果
+    return numStack.top();
+}
+
+```
