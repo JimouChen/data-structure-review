@@ -14,10 +14,27 @@ void getNext(string t, int next[]) {
     }
 }
 
+void getNextPro(string t, int next[]) {
+    int i = 1, j = 0;
+    next[1] = 0;
+    while (i < t.size()) {
+        if (j == 0 || t[i] == t[j]) {
+            i++;
+            j++;
+            if (t[i] != t[j])
+                next[i] = j;
+            else
+                next[i] = next[j];
+        } else {
+            j = next[j];
+        }
+    }
+}
+
 int kmp(string s, string t) {
     int i = 0, j = 0;
     int next[t.size()];
-    getNext(t, next);
+    getNextPro(t, next);
 
     while (i < s.size() && j < t.size()) {
         if (j == 0 || s[i] == t[j]) {
