@@ -80,3 +80,66 @@ void postCreateThread(ThreadTree t) {
         }
     }
 }
+
+/**确定完遍历的前驱和后继之后，接下来是借助前驱后继指针
+ * 来实现查找线索二叉树遍历的前驱和后继节点*/
+
+//中序线索二叉树找前驱节点
+TNode *inLastNode(ThreadTree t) {
+    if (t->ltag == 1) return t->l;
+    //如果t->ltag == 0
+    t = t->l;
+    while (t->rtag == 0) t = t->r;
+    return t;
+}
+
+//中序线索找后继节点
+TNode *inNextNode(ThreadTree t) {
+    if (t->rtag == 1) return t->r;
+    //若有右节点，则下一个访问的一定是右节点的最左下节点
+    t = t->r;
+    while (t->ltag == 0) t = t->l;
+    return t;
+}
+
+//先序找前驱
+TNode *preLastNode(ThreadTree t) {
+    if (t->ltag == 1)
+        return t->l;
+    else {
+        cout << "这种情况找不到前驱" << endl;
+        //这种情况一定是找不到前驱的,除非弄个三叉链表用他的父亲指针来找
+        return NULL;
+    }
+}
+
+//先序找后继
+TNode *preLastNode(ThreadTree t) {
+    if (t->rtag == 1)
+        return t->r;
+    else {
+        if (t->l) return t->l;
+        if (t->r) return t->r;
+    }
+}
+
+//后序找前驱
+TNode *postLastNode(ThreadTree t) {
+    if (t->ltag == 1)
+        return t->l;
+    else {
+        if (t->r) return t->r;
+        if (t->l) return t->l;
+    }
+}
+
+//后序找后继
+TNode *postNextNode(ThreadTree t) {
+    if (t->rtag == 1)
+        return t->r;
+    else {
+        //除非给你父节点，否则找不到
+        cout << "这种情况找不到后继节点" << endl;
+        return NULL;
+    }
+}
