@@ -20,7 +20,7 @@ void initThread(CueingTree t) {
 }
 
 void visit(CueingTree t) {
-    if (t->lchild) {
+    if (!t->lchild) {
         t->lchild = pre;
         t->ltag = 1;
     }
