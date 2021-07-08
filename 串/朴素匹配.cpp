@@ -25,7 +25,7 @@ int getIndex(String s, String t) {
             i++;
             j++;
         } else {
-            i = i - j + 2;  // i移动到下一个位置
+            i = i - j + 2;  // i移动到下一个位置，回退
             j = 1;
         }
     }
