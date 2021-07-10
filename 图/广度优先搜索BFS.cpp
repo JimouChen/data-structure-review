@@ -73,7 +73,7 @@ void bfsGraph(MGraph g, int x) {
         /**
         //如果不借助getFirstVex和getNextVex，可以这样做
         for (int i = 0; i < g.vexNum; i++) {
-            if (g.edge[top][i]) {
+            if (!flag[w] && g.edge[top][i]) {
                 q.push(i);
                 flag[i] = true;
             }
