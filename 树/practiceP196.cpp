@@ -26,7 +26,7 @@ void track2(BiTreeNode t) {
 }
 
 //统计度为0的节点
-void track2(BiTreeNode t) {
+void track0(BiTreeNode t) {
     if (t) {
         if (!t->left && !t->right) num++;
         if (t->left) track2(t->left);
