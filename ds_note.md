@@ -192,3 +192,41 @@ path[j]=i;//记录前驱
 ```
 - 注：arcs[i][j]表示Vi到Vj的弧的权值
 - 时间复杂度O(n^2)
+
+佛洛依德算法
+- 先准备2个数组
+- 一个存放距离，一个存放前驱
+```c++
+//佛洛依德算法，动态规划，三层遍历
+//需要实现准备2个二维数组a,path
+void floyd(MGraph g) {
+    MGraph a = g;
+    int path[g.vexNum][g.vexNum];
+    for (int i = 0; i < g.vexNum; i++)
+        for (int j = 0; j < g.vexNum; j++)
+            path[i][j] = -1;
+
+    for (int k = 0; k < g.vexNum; k++)//k是中转点
+        for (int i = 0; i < g.vexNum; i++)
+            for (int j = 0; j < g.vexNum; j++) {
+                if (a.edge[i][j] > a.edge[i][k] + a.edge[k][j]) {
+                    a.edge[i][j] = a.edge[i][k] + a.edge[k][j];
+                    path[i][j] = k;//记录中转点（上一个点）
+                }
+            }
+
+    //得到记录最短路径的a和前驱path，可做输出显示
+
+    for (int i = 0; i < g.vexNum; i++) {
+        for (int j = 0; j < g.vexNum; j++)
+            cout << a.edge[i][j] << " ";
+        cout << endl;
+    }
+
+    for (int i = 0; i < g.vexNum; i++) {
+        for (int j = 0; j < g.vexNum; j++)
+            cout << path[i][j] << " ";
+        cout << endl;
+    }
+}
+```
