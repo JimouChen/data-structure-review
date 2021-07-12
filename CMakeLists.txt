@@ -3,6 +3,7 @@ project(data_structure_review)
 
 set(CMAKE_CXX_STANDARD 11)
 
+
 include_directories(testall)
 include_directories(串)
 include_directories(图)
@@ -57,3 +58,4 @@ add_executable(data_structure_review
         队列/静态队列/staticQueue.h)
 add_executable(t1 图/最短路径算法.cpp)
 add_executable(t2 图/拓扑排序.cpp 图/拓扑排序.h)
+add_executable(find 查找/查找算法.cpp)
