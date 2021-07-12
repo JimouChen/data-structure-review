@@ -56,3 +56,4 @@ add_executable(data_structure_review
         队列/静态队列/staticQueue.cpp
         队列/静态队列/staticQueue.h)
 add_executable(t1 图/最短路径算法.cpp)
+add_executable(t2 图/拓扑排序.cpp 图/拓扑排序.h)
