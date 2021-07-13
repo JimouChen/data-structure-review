@@ -24,8 +24,22 @@ int biSearch(vector<int> nums, int key) {
     return -1;
 }
 
+//二分查找的递归写法
+int biSearchDG(vector<int> &nums, int low, int high, int key) {
+    if (low > high) return 0;
+    int mid = (low + high) / 2;
+
+    if (key > nums[mid])
+        return biSearchDG(nums, mid + 1, high, key);
+    else if (key < nums[mid])
+        return biSearchDG(nums, low, mid - 1, key);
+    else
+        return mid;
+}
+
 int main() {
-    vector<int> test{1,3,4,6,7,9,12};
-    cout<<biSearch(test, 9);
+    vector<int> test{1, 3, 4, 6, 7, 9, 12};
+    cout << biSearch(test, 9) << endl;
+    cout << biSearchDG(test, 0, test.size() - 1, 9);
     return 0;
 }
