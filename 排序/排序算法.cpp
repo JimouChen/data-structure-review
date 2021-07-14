@@ -3,7 +3,8 @@
 int main() {
     vector<int> test = {0, 2, 1, 6, 4, 3, 76, 50, 33};
 //    insertSort(test);
-    biInsertSort(test);
+//    biInsertSort(test);
+    shellSort(test);
     show(test);
 
     return 0;

@@ -45,3 +45,19 @@ void biInsertSort(vector<int> &nums) {
         }
     }
 }
+
+//希尔排序
+void shellSort(vector<int> &nums) {
+    for (int d = nums.size() / 2; d >= 1; d /= 2) {
+        for (int i = d + 1; i < nums.size(); i++) {
+            if (nums[i - d] > nums[i]) {
+                int temp = nums[i];
+                //这一步就是运用插入排序了，不同的是步长
+                int j;
+                for (j = i - d; j > 0 && temp < nums[j]; j -= d)
+                    nums[j + d] = nums[j];
+                nums[j + d] = temp;
+            }
+        }
+    }
+}
