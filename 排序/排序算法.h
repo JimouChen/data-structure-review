@@ -25,7 +25,7 @@ void insertSort(vector<int> &nums) {
 }
 
 //折半插入排序，即插入排序+折半查找
-void biInsertSort(vector<int> nums) {
+void biInsertSort(vector<int> &nums) {
     int i, j;
     for (i = 1; i < nums.size(); i++) {
         if (nums[i] < nums[i - 1]) {
