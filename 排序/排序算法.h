@@ -150,3 +150,56 @@ void quickSort(int nums[], int low, int high) {
         quickSort(nums, rightPosition + 1, high);
     }
 }
+
+//简单选择排序
+void selectSort(vector<int> &nums) {
+    for (int i = 0; i < nums.size() - 1; i++) {
+        int min = i;//记录最小值的下标
+        for (int j = i + 1; j < nums.size(); j++)
+            if (nums[min] > nums[j])min = j;
+
+        //交换
+        if (min != i) {
+            int temp = nums[min];
+            nums[min] = nums[i];
+            nums[i] = temp;
+        }
+    }
+}
+
+//堆排序,以大根堆排序为例，nums长度是len+1
+void heapAdjust(int nums[], int root, int len);
+
+//建立大根堆,O(n)
+void buildMaxHeap(int nums[], int len) {
+    //从nums[]中第len/2个根结点开始，逐渐向前面堆根结点移动调整堆
+    for (int i = len / 2; i > 0; --i)
+        heapAdjust(nums, i, len);
+}
+
+//这里设置nums[0]来存放每次比较的根结点,O(log2n)
+void heapAdjust(int nums[], int root, int len) {
+    nums[0] = nums[root];//nums[0]暂存根结点
+    //每次都先从根结点堆左孩子开始,一直下坠到父结点大于孩子结点
+    for (int i = 2 * root; i <= len; i *= 2) {
+        //如果左孩子小于右孩子，就拿右孩子和父结点比较
+        if (i < len && nums[i] < nums[i + 1]) i++;
+        //如果父结点本来就比左右孩子都大，即符合，所以不用交换
+        if (nums[0] >= nums[i]) break;
+        else {
+            nums[root] = nums[i];
+            root = i;//根结点的位置就到来最大的孩子，继续下坠判断，等待下一步把nums[i]覆盖
+        }
+    }
+    nums[root] = nums[0];
+}
+
+//O(nlog2n)
+void heapSort(int nums[], int len) {
+    buildMaxHeap(nums, len);
+    for (int i = len; i > 1; --i) {
+        //交换首尾
+        swap(nums[i], nums[1]);
+        heapAdjust(nums, 1, i - 1);//每次都要调整成大根堆
+    }
+}
