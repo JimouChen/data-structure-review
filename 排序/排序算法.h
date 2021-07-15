@@ -16,7 +16,7 @@ void insertSort(vector<int> &nums) {
     for (i = 1; i < nums.size(); i++) {
         if (nums[i] < nums[i - 1]) {
             int temp = nums[i];
-            //把nums[i]插入到前面排好序到位置
+            //把nums[i]插入到前面排好序的位置
             for (j = i - 1; j >= 0 && temp < nums[j]; j--)
                 nums[j + 1] = nums[j];
             nums[j + 1] = temp;
@@ -180,7 +180,7 @@ void buildMaxHeap(int nums[], int len) {
 //这里设置nums[0]来存放每次比较的根结点,O(log2n)
 void heapAdjust(int nums[], int root, int len) {
     nums[0] = nums[root];//nums[0]暂存根结点
-    //每次都先从根结点堆左孩子开始,一直下坠到父结点大于孩子结点
+    //每次都先从根结点的左孩子开始,一直下坠到父结点大于孩子结点
     for (int i = 2 * root; i <= len; i *= 2) {
         //如果左孩子小于右孩子，就拿右孩子和父结点比较
         if (i < len && nums[i] < nums[i + 1]) i++;
@@ -201,5 +201,55 @@ void heapSort(int nums[], int len) {
         //交换首尾
         swap(nums[i], nums[1]);
         heapAdjust(nums, 1, i - 1);//每次都要调整成大根堆
+    }
+}
+
+//外部的归并排序
+vector<int> mergeSortW(vector<int> nums1, vector<int> nums2) {
+    int i = 0, j = 0, k = 0;
+    vector<int> res(nums1.size() + nums2.size());
+    while (i < nums1.size() && j < nums2.size()) {
+        if (nums1[i] > nums2[j])
+            res[k++] = nums2[j++];
+        else
+            res[k++] = nums1[i++];
+    }
+    //剩下的直接赋值到res
+    while (i < nums1.size())res[k++] = nums1[i++];
+    while (j < nums2.size())res[k++] = nums2[j++];
+
+    return res;
+}
+
+#define lenA 10
+int *b = (int *) malloc(sizeof(int) * lenA);//辅助数组
+
+//归并排序，同一个数组内部,mid指向的是a中第一个有序序列的最后一个下标
+//也就是对low -> mid 和 mid+1 -> high进行归并
+void merge(int a[], int low, int mid, int high) {
+    int i = low, j = mid + 1, k;
+    //先把a暂存到b
+    for (k = 0; k <= high; ++k)
+        b[k] = a[k];
+    k = i;//k = low
+    //在b内操作，处理后再赋值回a
+    while (i <= mid && j <= high) {
+        if (b[i] <= b[j])
+            a[k++] = b[i++];
+        else a[k++] = b[j++];
+    }
+
+    //对b剩下的赋值到a
+    while (i <= mid) a[k++] = b[i++];
+    while (j <= high) a[k++] = b[j++];
+}
+
+void mergeSort(int a[], int low, int high) {
+    if (low < high) {
+        int mid = (high + low) / 2;
+        //分别对左右两个区间进行合并排序
+        mergeSort(a, low, mid);
+        mergeSort(a, mid + 1, high);
+        merge(a, low, mid, high);//归并
     }
 }
