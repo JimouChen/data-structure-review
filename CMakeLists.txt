@@ -19,7 +19,7 @@ include_directories(队列/动态队列)
 include_directories(队列/静态队列)
 
 add_executable(data_structure_review
-        testall/test_all.cpp
+
         串/kmpSTL版本.cpp
         串/KMP匹配.cpp
         串/串的基本操作.cpp
@@ -56,8 +56,12 @@ add_executable(data_structure_review
         队列/动态队列/无头结点链式队列.h
         队列/静态队列/staticQueue.cpp
         队列/静态队列/staticQueue.h)
+
+add_executable(test testall/test_all.cpp)
 add_executable(t1 图/最短路径算法.cpp)
 add_executable(t2 图/拓扑排序.cpp 图/拓扑排序.h)
 add_executable(find 查找/查找算法.cpp)
 add_executable(hashtable 查找/哈希表.cpp)
 add_executable(sortAl 排序/排序算法.cpp 排序/排序算法.h)
+
+add_executable(banker testall/banker.cpp testall/banker.h)
