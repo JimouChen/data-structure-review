@@ -25,7 +25,7 @@ bool isSafety(vector<vector<int>> maxSource, vector<vector<int>> allocation, vec
         for (int j = 0; j < maxSource[0].size(); ++j)
             need[i][j] = maxSource[i][j] - allocation[i][j];
 
-    int cnt = pow(need.size(), 3);
+    int cnt = int(pow(need.size(), 3));
     //判断剩下的资源够不够进程用，够的话就加到安全序列
     while (cnt--) {
         for (int i = 0; i < need.size(); ++i) {
@@ -48,17 +48,50 @@ bool isSafety(vector<vector<int>> maxSource, vector<vector<int>> allocation, vec
             }
         }
         //所有线程编号都加入安全序列，则是个安全的状态
-        if (safeList.size() == need.size())
+        if (safeList.size() == need.size()) {
+            cout << "安全序列是：";
+            for (int i : safeList)
+                cout << "P" << i << "  ";
+            cout << endl << endl;
             return true;
+        }
     }
-
     return false;
+}
+
+void showMsg(vector<vector<int>> maxSource, vector<vector<int>> allocation,
+             vector<vector<int>> need, vector<int> &available) {
+    cout << "可用资源向量：";
+    for (int i : available)
+        cout << i << " ";
+
+    cout << endl << "资源分配情况：" << endl;
+    cout << "进程Pi\t Max\t Allocation\t \tNeed\t" << endl;
+    for (int i = 0; i < maxSource.size(); ++i) {
+        cout << "P" << i << "\t\t ";
+        for (int j = 0; j < maxSource[0].size(); ++j)
+            cout << maxSource[i][j] << " ";
+        cout << "\t\t ";
+        for (int j = 0; j < maxSource[0].size(); ++j)
+            cout << allocation[i][j] << " ";
+        cout << "\t \t";
+        for (int j = 0; j < maxSource[0].size(); ++j)
+            cout << need[i][j] << " ";
+        cout << "\t ";
+        cout << endl;
+    }
 }
 
 //加入进程Pi发送的请求request[i]的银行家算法
 //即 request 是进程Pi的请求向量
 bool bankerAl(vector<int> request_i, int pi, vector<vector<int>> &maxSource, vector<vector<int>> &allocation,
               vector<int> &available) {
+
+    //开始的时候，先进行一次安全性检查
+    if (!isSafety(maxSource, allocation, available))
+        return false;
+
+    //开始进行银行家算法
     vector<vector<int>> need(maxSource.size(), vector<int>(maxSource[0].size()));
     vector<int> safeList;//安全序列加入安全进程的编号
 
@@ -67,6 +100,8 @@ bool bankerAl(vector<int> request_i, int pi, vector<vector<int>> &maxSource, vec
         for (int j = 0; j < maxSource[0].size(); ++j)
             need[i][j] = maxSource[i][j] - allocation[i][j];
 
+    showMsg(maxSource, allocation, need, available);
+
 
     //1. 如果 Request_i[j] ≤ Need[i,j]便转向步骤 2；否则认为出错，因为它所需要的资源数已超过它所宣布的最大值。
     for (int j = 0; j < need[0].size(); ++j)
@@ -74,8 +109,11 @@ bool bankerAl(vector<int> request_i, int pi, vector<vector<int>> &maxSource, vec
 
 
     //2.如果 Request_i[j] ≤ Available[j]，便转向步骤 3；否则，表示尚无足够资源，Pi须等待
-    for (int i = 0; i < allocation.size(); ++i)
-        if (request_i[i] > available[i]) return false;
+    for (int i = 0; i < request_i.size(); ++i)
+        if (request_i[i] > available[i]) {
+            cout << "P" << pi << "需要等待资源" << endl;
+            return false;
+        }
 
     //3.系统试探着把资源分配给进程 Pi，并修改下面数据结构中的数值
     /*
@@ -89,8 +127,15 @@ bool bankerAl(vector<int> request_i, int pi, vector<vector<int>> &maxSource, vec
         need[pi][i] -= request_i[i];
     }
 
+    showMsg(maxSource, allocation, need, available);
+
     //再次执行安全性检查算法看看当前情况是否可以得到一个安全序列
-    return isSafety(maxSource, allocation, available);
+    if (isSafety(maxSource, allocation, available)) {
+        cout << "进程P" << pi << "可以申请资源" << endl;
+        return true;
+    }
+    cout << "进程P" << pi << "无法申请资源" << endl;
+    return false;
 
 }
 
@@ -134,10 +179,18 @@ void testBankerAl() {
     };
     vector<int> available = {3, 3, 2};
     vector<int> allHas = {10, 5, 7};
-    vector<int> request_i = {2, 1, 1};
-    if (bankerAl(request_i, 0, maxSource, allocation, available))
-        cout << "is safe" << endl;
-    else cout << "not safe" << endl;
+//    vector<int> request_i = {2, 1, 1};
+    vector<int> request_i = {1, 0, 2};
+//    int pi = 0;
+    int pi = 1;
+    cout << endl << "申请资源的进程: P" << pi << endl;
+    cout << "申请各类资源数量：";
+    for (int i : request_i)
+        cout << i << " ";
+    cout << endl;
+    if (bankerAl(request_i, pi, maxSource, allocation, available))
+        cout << "存在安全序列" << endl;
+    else cout << "不存在安全序列" << endl;
 
 }
 
