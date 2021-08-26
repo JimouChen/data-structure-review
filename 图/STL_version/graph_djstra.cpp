@@ -59,7 +59,7 @@ int main() {
             {7,   MAX, 6, 0, MAX},
             {MAX, 3,   9, 2,    0}
     };
-    djstra(test, 0);//0 2 1 3 4
+    djstra(test, 0);
 
     return 0;
 }
