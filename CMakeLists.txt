@@ -65,3 +65,7 @@ add_executable(hashtable 查找/哈希表.cpp)
 add_executable(sortAl 排序/排序算法.cpp 排序/排序算法.h)
 
 add_executable(banker testall/banker.cpp testall/banker.h)
+
+add_executable(graph_bfs 图/STL_version/graph_bfs.cpp)
+add_executable(graph_bfs_djstra 图/STL_version/graph_bfs_djstra.cpp)
+add_executable(graph_djstra 图/STL_version/graph_djstra.cpp)
