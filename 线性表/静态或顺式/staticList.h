@@ -44,7 +44,7 @@ void showList(LinearList l) {
 }
 
 //返回找到的位置
-int seaerch(int a, LinearList l) {
+int search(int a, LinearList l) {
     for (int i = 0; i < l.length; i++) {
         if (l.data[i] == a) {
             return i;
