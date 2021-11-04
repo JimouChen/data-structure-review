@@ -63,6 +63,45 @@ void levelOrder(BiTreeNode t) {
     }
 }
 
+//二叉树中序遍历非递归做法
+void noDGInOrder(BiTreeNode t) {
+    stack<BiNode *> stack;
+    BiTreeNode p = t;//遍历指针p
+    while (p || !stack.empty()) {
+        if (p) {//如果有左孩子就先入栈
+            stack.push(p);
+            p = p->left;
+        } else {
+            //没有左孩子，此时已经到底了
+            //出栈并访问,转向访问该出栈节点的右子树
+            p = stack.top();
+            stack.pop();
+            cout << p->data << " ";
+            //如果有右孩子就入栈
+            p = p->right;
+        }
+    }
+}
+
+// 非递归先序遍历，类似中序
+void noDGPreOrder(BiTreeNode t) {
+    stack<BiNode *> stack;
+    BiTreeNode p = t;
+    while (p || !stack.empty()) {
+        if (p) {
+            //先序先访问
+            cout << p->data << " ";
+            stack.push(p);
+            p = p->left;
+        } else {
+            //访问右子树
+            p = stack.top();
+            stack.pop();
+            p = p->right;
+        }
+    }
+}
+
 //获取二叉树的深度
 //其实是后序遍历的应用
 int depthTree(BiTreeNode t) {
@@ -72,6 +111,37 @@ int depthTree(BiTreeNode t) {
         return l > r ? l + 1 : r + 1;
     }
     return 0;  //空树
+}
+
+//p142-19
+int wpl = 0;
+
+//solution 1
+void dfsWPL(BiTreeNode t, int depth) {
+    if (t) {
+        if (!t->left && !t->right)
+            wpl += t->data * depth;
+        dfsWPL(t->left, depth + 1);
+        dfsWPL(t->right, depth + 1);
+    }
+}
+
+//solution 2
+void levelWPL(BiTreeNode t) {
+    queue<BiNode *> q;
+    q.push(t);
+    int level = 0;
+    while (!q.empty()) {
+        auto top = q.front();
+        q.pop();
+        if (!top->left && !top->right) {
+            level--;
+            wpl += top->data * level;
+        }
+        if (top->left) q.push(top->left);
+        if (top->right) q.push(top->right);
+        level++;
+    }
 }
 
 int main() {
@@ -102,7 +172,15 @@ int main() {
     c->right = NULL;
 
     levelOrder(t);
+    cout << endl;
     preOrder(t);
+    cout << endl;
+    inOrder(t);
+    cout << endl;
+    noDGInOrder(t);
+    cout << endl;
+    noDGPreOrder(t);
+
 
     return 0;
 }

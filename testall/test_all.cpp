@@ -1,115 +1,185 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 
 using namespace std;
-#define maxVexNum 100
-#define INF 99999999 //无连接的边无穷大的距离
-typedef struct {
-    char vex[maxVexNum];
-    int edge[maxVexNum][maxVexNum];
-    int vexNum, edgeNum;
-} MGraph;
 
-//找到dist的最小值
-int findMinDist(int dist[], bool final[], int vNum) {
-    int min = INF;
-    for (int i = 0; i < vNum; i++) {
-        if (!final[i] && min > dist[i])
-            min = dist[i];
+typedef struct BiNode {
+    int data;
+    struct BiNode *left, *right;
+} BiNode, *BiTreeNode;
+
+int sum = 0;
+
+//从根结点到叶子结点的每条路径的权值和
+void dfs(BiTreeNode root) {
+    if (root) {
+        cout << root->data << " ";
+        sum += root->data;
+
+        dfs(root->left);
+        dfs(root->right);
+
+        if (!root->right && !root->left)
+            cout << "sum = " << sum << endl;
+        sum -= root->data;
     }
-    return min;
 }
 
-//v是起点
-void dijkstra(MGraph g, int v) {
-    bool final[g.vexNum];
-    int path[g.vexNum];
-    int dist[g.vexNum];
-
-    final[v] = true;
-    dist[v] = 0;
-    path[v] = -1;
-
-    //初始化dist和path
-    for (int i = 0; i != v && i < g.vexNum; i++) {
-        final[i] = false;//不写这句也可以，默认是false
-        dist[i] = g.edge[v][i];
-        path[i] = (g.edge[v][i] == INF) ? -1 : 0;
+void preOrder(BiTreeNode root) {
+    if (root) {
+        cout << root->data << " ";
+        preOrder(root->left);
+        preOrder(root->right);
     }
+}
 
-    //进行n-1轮处理
-    for (int i = 0; i != v && i < g.vexNum; i++) {
-        //找到未确定最短距离的且dist最小的点
-        int j = findMinDist(dist, final, g.vexNum);
-        final[j] = true;
-        //并检查它的所有邻接点，更新最小值
-        for (int k = 0; k != v && k != j && k < g.vexNum; k++) {
-            if (g.edge[j][k] && g.edge[j][k] != INF) {
-                if (!final[k] && dist[i] + g.edge[i][j] < dist[j]) {
-                    dist[j] = dist[i] + g.edge[i][j];
-                    path[k] = j;
-                }
-            }
+void inOrder(BiTreeNode root) {
+    if (root) {
+        inOrder(root->left);
+        cout << root->data << " ";
+        inOrder(root->right);
+    }
+}
+
+void postOrder(BiTreeNode root) {
+    if (root) {
+        postOrder(root->left);
+        postOrder(root->right);
+        cout << root->data << " ";
+    }
+}
+
+//二叉树的层次遍历
+void levelOrder(BiTreeNode t) {
+    if (t) {
+        queue<BiTreeNode> q;
+        q.push(t);
+        while (!q.empty()) {
+            BiTreeNode top = q.front();
+            cout << top->data << " ";
+            q.pop();
+            if (top->left) q.push(top->left);
+            if (top->right) q.push(top->right);
         }
     }
-
-    //得到path和dist后再显示处理
 }
 
-//佛洛依德算法，动态规划，三层遍历
-//需要实现准备2个二维数组a,path
-void floyd(MGraph g) {
-    MGraph a = g;
-    int path[g.vexNum][g.vexNum];
-    for (int i = 0; i < g.vexNum; i++)
-        for (int j = 0; j < g.vexNum; j++)
-            path[i][j] = -1;
-
-    for (int k = 0; k < g.vexNum; k++)//k是中转点
-        for (int i = 0; i < g.vexNum; i++)
-            for (int j = 0; j < g.vexNum; j++) {
-                if (a.edge[i][j] > a.edge[i][k] + a.edge[k][j]) {
-                    a.edge[i][j] = a.edge[i][k] + a.edge[k][j];
-                    path[i][j] = k;//记录中转点（上一个点）
-                }
-            }
-
-    //得到记录最短路径的a和前驱path，可做输出显示
-
-    for (int i = 0; i < g.vexNum; i++) {
-        for (int j = 0; j < g.vexNum; j++)
-            cout << a.edge[i][j] << " ";
-        cout << endl;
+//二叉树中序遍历非递归做法
+void noDGInOrder(BiTreeNode t) {
+    stack<BiNode *> stack;
+    BiTreeNode p = t;//遍历指针p
+    while (p || !stack.empty()) {
+        if (p) {//如果有左孩子就先入栈
+            stack.push(p);
+            p = p->left;
+        } else {
+            //没有左孩子，此时已经到底了
+            //出栈并访问,转向访问该出栈节点的右子树
+            p = stack.top();
+            stack.pop();
+            cout << p->data << " ";
+            //如果有右孩子就入栈
+            p = p->right;
+        }
     }
+}
 
-    for (int i = 0; i < g.vexNum; i++) {
-        for (int j = 0; j < g.vexNum; j++)
-            cout << path[i][j] << " ";
-        cout << endl;
+// 非递归先序遍历，类似中序
+void noDGPreOrder(BiTreeNode t) {
+    stack<BiNode *> stack;
+    BiTreeNode p = t;
+    while (p || !stack.empty()) {
+        if (p) {
+            //先序先访问
+            cout << p->data << " ";
+            stack.push(p);
+            p = p->left;
+        } else {
+            //访问右子树
+            p = stack.top();
+            stack.pop();
+            p = p->right;
+        }
     }
+}
 
+//获取二叉树的深度
+//其实是后序遍历的应用
+int depthTree(BiTreeNode t) {
+    if (t) {
+        int l = depthTree(t->left);
+        int r = depthTree(t->right);
+        return l > r ? l + 1 : r + 1;
+    }
+    return 0;  //空树
+}
 
+int wpl = 0;
+
+void dfsWPL(BiTreeNode t, int depth) {
+    if (t) {
+        if (!t->left && !t->right)
+            wpl += t->data * depth;
+        dfsWPL(t->left, depth + 1);
+        dfsWPL(t->right, depth + 1);
+    }
+}
+
+void levelWPL(BiTreeNode t) {
+    queue<BiNode *> q;
+    q.push(t);
+    int level = 0;
+    while (!q.empty()) {
+        auto top = q.front();
+        q.pop();
+        if (!top->left && !top->right) {
+            level--;
+            wpl += top->data * level;
+        }
+        if (top->left) q.push(top->left);
+        if (top->right) q.push(top->right);
+        level++;
+    }
 }
 
 int main() {
+    BiTreeNode t = (BiTreeNode) malloc(sizeof(BiNode));
+    BiTreeNode a = (BiTreeNode) malloc(sizeof(BiNode));
+    BiTreeNode b = (BiTreeNode) malloc(sizeof(BiNode));
+    BiTreeNode c = (BiTreeNode) malloc(sizeof(BiNode));
+    BiTreeNode d = (BiTreeNode) malloc(sizeof(BiNode));
+    BiTreeNode e = (BiTreeNode) malloc(sizeof(BiNode));
 
-    MGraph graph;
-    graph.vexNum = 5;
-    graph.edgeNum = 7;
-    int temp[5][5] = {
-            {0,   INF, 1,   INF, 10},
-            {INF, 0,   INF, 1,   5},
-            {INF, 1,   0,   INF, 7},
-            {INF, INF, INF, 0,   1},
-            {INF, INF, INF, INF, 0}
-    };
+    t->data = 1;
+    t->left = a;
+    t->right = b;
+    a->data = 2;
+    b->data = 3;
+    c->data = 6;
+    b->left = NULL;
+    b->right = c;
+    a->left = d;
+    a->right = e;
+    d->data = 4;
+    e->data = 5;
+    d->left = NULL;
+    e->left = NULL;
+    d->right = NULL;
+    e->right = NULL;
+    c->left = NULL;
+    c->right = NULL;
 
-    for (int i = 0; i < graph.vexNum; i++)
-        for (int j = 0; j < graph.vexNum; j++)
-            graph.edge[i][j] = temp[i][j];
+//    levelOrder(t);
+//    cout << endl;
+//    preOrder(t);
+//    cout << endl;
+//    inOrder(t);
+//    cout << endl;
+//    noDGInOrder(t);
+//    cout << endl;
+//    noDGPreOrder(t);
 
-    floyd(graph);
-
-
+//    dfsWPL(t, 1);
+    levelWPL(t);
+    cout << wpl;
     return 0;
 }
-

@@ -61,7 +61,7 @@ int insertNode(BSTTree &t, int key) {
     return 1;
 }
 
-//建立一颗二叉排序树，给定输入序列,n是个数
+//建立一棵二叉排序树，给定输入序列,n是个数
 void createBST(BSTTree &t, int value[], int n){
     t = NULL;
     int i = 0;

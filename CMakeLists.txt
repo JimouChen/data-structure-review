@@ -62,6 +62,8 @@ add_executable(t1 图/最短路径算法.cpp)
 add_executable(t2 图/拓扑排序.cpp 图/拓扑排序.h)
 add_executable(find 查找/查找算法.cpp)
 add_executable(hashtable 查找/哈希表.cpp)
+add_executable(unionFind 查找/并查集.cpp)
+
 add_executable(sortAl 排序/排序算法.cpp 排序/排序算法.h)
 
 add_executable(banker testall/banker.cpp testall/banker.h)
