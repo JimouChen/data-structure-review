@@ -141,6 +141,86 @@ void levelWPL(BiTreeNode t) {
     }
 }
 
+//统计二叉树的宽度
+int getWidth(BiTreeNode t) {
+    queue<BiNode *> q;
+    q.push(t);
+    int width = 1;
+    while (!q.empty()) {
+        int n = q.size();
+        while (n--) {
+            BiNode *top = q.front();
+            if (top->left) q.push(top->left);
+            if (top->right) q.push(top->right);
+            q.pop();
+        }
+        width = q.size() > width ? q.size() : width;
+    }
+    return width;
+}
+
+//从二叉树中删除所有叶节点
+void deleteLeaves(BiTreeNode &t) {
+    if (t) {
+        if (t->left && !t->left->left && !t->left->right)
+            t->left = NULL;
+        if (t->right && !t->right->left && !t->right->right)
+            t->right = NULL;
+        deleteLeaves(t->left);
+        deleteLeaves(t->right);
+    }
+}
+
+int getPLevel(BiTreeNode t, BiNode *p) {
+    int level = 1;
+    queue<BiNode *> q;
+    q.push(t);
+    while (!q.empty()) {
+        int n = q.size();
+        while (n--) {
+            BiNode *top = q.front();
+            if (top == p) return level;
+            if (top->left) q.push(top->left);
+            if (top->right) q.push(top->right);
+            q.pop();
+        }
+        level++;
+    }
+    return -1;//找不到p指针
+}
+
+stack<int> s;
+//int sum = 0;
+
+void getPath(int data, BiTreeNode t) {
+    if (t) {
+        sum += t->data;
+        if ((sum < data && !t->left && !t->right) || sum > data){
+            sum -= t->data;
+            return;
+        }
+
+        if (sum < data && (t->left || t->right))
+            s.push(t->data);
+        if (sum == data && !t->left && !t->right) {
+            s.push(t->data);
+//            path.emplace_back(s);
+            //打印
+            while (!s.empty()) {
+                auto top = s.top();
+                cout << top << " ";
+                s.pop();
+            }
+            cout << endl;
+            sum = 0;
+            return;
+        }
+
+
+        getPath(data, t->left);
+        getPath(data, t->right);
+    }
+}
 int main() {
     BiTreeNode t = (BiTreeNode) malloc(sizeof(BiNode));
     BiTreeNode a = (BiTreeNode) malloc(sizeof(BiNode));
@@ -168,6 +248,9 @@ int main() {
     c->left = NULL;
     c->right = NULL;
 
+
+    getPath(10, t);
+//    cout << getPLevel(t, b) << endl;
 //    levelOrder(t);
 //    cout << endl;
 //    preOrder(t);
@@ -179,7 +262,10 @@ int main() {
 //    noDGPreOrder(t);
 
 //    dfsWPL(t, 1);
-    levelWPL(t);
-    cout << wpl;
+//    levelWPL(t);
+//    cout << wpl;
+//    deleteLeaves(t);
+//    cout << getWidth(t);
+
     return 0;
 }
