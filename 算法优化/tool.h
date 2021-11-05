@@ -1,6 +1,8 @@
 #ifndef DATA_STRUCTURE_REVIEW_TOOL_H
 #define DATA_STRUCTURE_REVIEW_TOOL_H
+
 # include <bits/stdc++.h>
+
 using namespace std;
 typedef long long ll;
 
@@ -18,12 +20,14 @@ bool isPrime(ll num) {
 
 // 组合优化，时间复杂度从n! 优化到n的平方logN
 vector<vector<ll>> res;
+
 bool compare(ll a, ll b) {
     if (a > b)
         return true;
     else
         return false;
 }
+
 void saveRes(vector<ll> &vec, vector<ll> &t) {
     vector<ll> temp;
     for (ll i = 0; i < vec.size(); i++)
@@ -32,7 +36,7 @@ void saveRes(vector<ll> &vec, vector<ll> &t) {
 }
 
 //获取从t.size()里面选出k个数的所有组合
-void combination(vector<ll> &t, ll k){
+void combination(vector<ll> &t, ll k) {
     ll total = t.size();
     //初始化组合，如:1,1,0,0,0
     vector<ll> vec(total);
@@ -54,5 +58,37 @@ void combination(vector<ll> &t, ll k){
     }
 }
 
+//高精度加法
+
+string addBigNum(string &sa, string &sb) {
+    if (sa == "0" && sb == "0") return "0";
+
+    int lenA = sa.size(), lenB = sb.size();
+    int lenC = max(lenA, lenB) + 1;
+    vector<int> a(lenC);
+    vector<int> b(lenC);
+    vector<int> c(lenC);
+    for (int i = 0; i < lenA; i++)
+        a[lenA - i - 1] = sa[i] - '0';
+    for (int i = 0; i < lenB; ++i)
+        b[lenB - i - 1] = sb[i] - '0';
+
+    //核心部分
+    for (int i = 0; i < lenC; ++i) {
+        c[i] += a[i] + b[i];
+        c[i + 1] = c[i] / 10;
+        c[i] = c[i] % 10;
+    }
+    string res = "";
+    for (int i = 0; i < lenC; ++i)
+        res += c[i] + '0';
+
+    //翻转后去掉前导0
+    reverse(res.begin(), res.end());
+    if (res[0] == '0')
+        res = res.substr(1, res.size() - 1);
+
+    return res;
+}
 
 #endif //DATA_STRUCTURE_REVIEW_TOOL_H
