@@ -95,40 +95,6 @@ int getPLevel(BiTreeNode t, BiNode *p) {
     return -1;//找不到p指针
 }
 
-//p197
-vector<stack<int>> path;
-stack<int> s;
-int sum = 0;
 
-void getPath(int data, BiTreeNode t) {
-    if (t) {
-        sum += t->data;
-        if (sum < data && !t->left && !t->right) {
-            sum -= t->data;
-            return;
-        }
-        if (sum < data && (t->left || t->right))
-            s.push(t->data);
-        if (sum == data && !t->left && !t->right) {
-//            path.emplace_back(s);
-            //打印
-            while (!s.empty()) {
-                auto top = s.top();
-                cout << top << " ";
-                s.pop();
-            }
-            cout << endl;
-            sum -= t->data;
-            return;
-        }
-        if (sum > data) {
-            sum -= t->data;
-            return;
-        }
-
-        getPath(data, t->left);
-        getPath(data, t->right);
-    }
-}
 
 int main() { return 0; }

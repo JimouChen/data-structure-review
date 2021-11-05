@@ -73,3 +73,6 @@ add_executable(graph_bfs_djstra 图/STL_version/graph_bfs_djstra.cpp)
 add_executable(graph_djstra 图/STL_version/graph_djstra.cpp)
 
 add_executable(p17 线性表/题解练习/p17.cpp 线性表/题解练习/p17.h)
+
+add_executable(combination 算法优化/全排列优化_二进制法.cpp)
+add_executable(tool 算法优化/tool.h)
