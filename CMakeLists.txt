@@ -71,6 +71,7 @@ add_executable(banker testall/banker.cpp testall/banker.h)
 add_executable(graph_bfs 图/STL_version/graph_bfs.cpp)
 add_executable(graph_bfs_djstra 图/STL_version/graph_bfs_djstra.cpp)
 add_executable(graph_djstra 图/STL_version/graph_djstra.cpp)
+add_executable(graph_floyd 图/STL_version/graph_floyd.cpp)
 
 add_executable(p17 线性表/题解练习/p17.cpp 线性表/题解练习/p17.h)
 

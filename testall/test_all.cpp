@@ -102,29 +102,29 @@ int main() {
     MGraph graph;
     graph.vexNum = 5;
     graph.edgeNum = 7;
-//    int temp[5][5] = {
-//            {0,   INF, 1,   INF, 10},
-//            {INF, 0,   INF, 1,   5},
-//            {INF, 1,   0,   INF, 7},
-//            {INF, INF, INF, 0,   1},
-//            {INF, INF, INF, INF, 0}
-//    };
-
     int temp[5][5] = {
-            {0,   10, MAX, MAX, 5},
-            {MAX, 0,   1,  MAX, 2},
-            {MAX, MAX, 0, 4, MAX},
-            {7,   MAX, 6, 0, MAX},
-            {MAX, 3,   9, 2,    0}
+            {0,   INF, 1,   INF, 10},
+            {INF, 0,   INF, 1,   5},
+            {INF, 1,   0,   INF, 7},
+            {INF, INF, INF, 0,   1},
+            {INF, INF, INF, INF, 0}
     };
+
+//    int temp[5][5] = {
+//            {0,   10, MAX, MAX, 5},
+//            {MAX, 0,   1,  MAX, 2},
+//            {MAX, MAX, 0, 4, MAX},
+//            {7,   MAX, 6, 0, MAX},
+//            {MAX, 3,   9, 2,    0}
+//    };
 
     for (int i = 0; i < graph.vexNum; i++)
         for (int j = 0; j < graph.vexNum; j++)
             graph.edge[i][j] = temp[i][j];
 
-//    floyd(graph);
-//    cout << endl;
-    dijkstra(graph, 0);
+    floyd(graph);
+    cout << endl;
+//    dijkstra(graph, 0);
 
     return 0;
 }
