@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+
 using namespace std;
 #define maxVexNum 100
 //假设这里元素是char，边是int
@@ -36,15 +37,13 @@ void addEdge(MGraph &g, int x, int y, int value) {
 }
 
 void findFirstNeigh(MGraph g, int x) {
-    bool flag = 0;
     for (int i = 0; i < g.vexNum; i++) {
         if (g.edge[x][i]) {
             cout << g.vex[i] << endl;
-            flag = 1;
-            break;
+            return;
         }
     }
-    if (flag == 0) cout << "None" << endl;
+    cout << "None" << endl;
 }
 
 void getNextNeighbor(MGraph g, int x) {
