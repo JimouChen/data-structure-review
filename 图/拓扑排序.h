@@ -100,4 +100,31 @@ void dfs(MGraph g, int vex) {
     //如果把vex的输出放在这行位置，则是逆拓扑排序序列
 }
 
+//邻接矩阵的做法
+#define INF 99999999
+bool tuopuSort(MGraph g, vector<int> &inDegree) {
+    stack<int> stack;
+    vector<int> res(g.vexNum, -1);//记录打印序列
+    for (int i = 0; i < g.vexNum; i++)
+        if (!inDegree[i])stack.push(i);
+    int cnt = 0;
+
+    while (!stack.empty()) {
+        int top = stack.top();
+        cout << top << " ";
+        res[cnt++] = top;
+
+        stack.pop();
+        for (int i = 0; i < g.vexNum; i++) {
+            if (g.edge[top][i] > 0 && g.edge[top][i] != INF) {
+                inDegree[i]--;
+                if (!inDegree[i]) stack.push(i);
+            }
+        }
+    }
+
+    if (cnt < g.vexNum) return false;
+    return true;
+}
+
 #endif //DATA_STRUCTURE_REVIEW_拓扑排序_H
