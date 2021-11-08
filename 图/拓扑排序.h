@@ -1,6 +1,10 @@
-//
-// Created by jmchen on 2021/7/12.
-//
+/*
+ Created by jmchen on 2021/7/12.
+ 基本思想：
+    选择一个没有前驱的顶点，输出
+    找到该顶点相连的其他点，把这些相邻点的度减1
+    重复上面过程
+*/
 
 #ifndef DATA_STRUCTURE_REVIEW_拓扑排序_H
 #define DATA_STRUCTURE_REVIEW_拓扑排序_H
