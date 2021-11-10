@@ -3,7 +3,7 @@
 using namespace std;
 
 //顺序查找
-int orderSearche(vector<int> nums, int key) {
+int orderSearch(vector<int> nums, int key) {
     nums[0] = key;//哨兵
     int i;
     for (i = nums.size() - 1; nums[i] != key; i--);

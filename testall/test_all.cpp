@@ -1,56 +1,72 @@
-#include<bits/stdc++.h>
+#include <cstdio>
+#include <deque>
+#include <map>
 
 using namespace std;
-#define maxVexNum 100
-#define INF 99999999 //无连接的边无穷大的距离
-typedef struct {
-    char vex[maxVexNum];
-    int edge[maxVexNum][maxVexNum];
-    int vexNum, edgeNum;
-} MGraph;
+const int maxn = 25000 + 50;
+const int oo = 0xffffff;
+int dist[maxn];
+int vis[maxn];
+map<int, int> G[maxn];
+map<int, int>::iterator iter;
+deque<int> dq;
+int t, r, p, s;
 
-bool tuopuSort(MGraph g, vector<int> &inDegree) {
-    stack<int> stack;
-    vector<int> res(g.vexNum, -1);//记录打印序列
-    for (int i = 0; i < g.vexNum; i++)
-        if (!inDegree[i])stack.push(i);
-    int cnt = 0;
-
-    while (!stack.empty()) {
-        int top = stack.top();
-        cout << top << " ";
-        res[cnt++] = top;
-
-        stack.pop();
-        for (int i = 0; i < g.vexNum; i++) {
-            if (g.edge[top][i] > 0 && g.edge[top][i] != INF) {
-                inDegree[i]--;
-                if (!inDegree[i]) stack.push(i);
+void spfa(int v0) {
+    for (int i = 1; i <= t; i++) {
+        dist[i] = oo;
+        vis[i] = 0;
+    }
+    dist[v0] = 0;
+    vis[v0] = 1;
+    dq.push_back(v0);
+    while (!dq.empty()) {
+        int cur = dq.front();
+        dq.pop_front();
+        vis[cur] = 0;
+        for (iter = G[cur].begin(); iter != G[cur].end(); iter++) {
+            int i = iter->first;
+            if (dist[cur] + G[cur][i] < dist[i]) {
+                dist[i] = dist[cur] + G[cur][i];
+                if (!vis[i]) {
+                    vis[i] = 1;
+                    if (!dq.empty()) {
+                        if (dist[i] < dist[dq.front()]) {
+                            dq.push_front(i);
+                        } else {
+                            dq.push_back(i);
+                        }
+                    } else {
+                        dq.push_back(i);
+                    }
+                }
             }
         }
     }
-
-    if (cnt < g.vexNum) return false;
-    return true;
 }
 
 int main() {
-
-    MGraph graph;
-    graph.vexNum = 5;
-    graph.edgeNum = 7;
-    int temp[5][5] = {
-            {0,   INF, 1,   INF, 10},
-            {INF, 0,   INF, 1,   5},
-            {INF, 1,   0,   INF, 7},
-            {INF, INF, INF, 0,   1},
-            {INF, INF, INF, INF, 0}
-    };
-
-
-    for (int i = 0; i < graph.vexNum; i++)
-        for (int j = 0; j < graph.vexNum; j++)
-            graph.edge[i][j] = temp[i][j];
-
+    scanf("%d%d%d%d", &t, &r, &p, &s);
+    int a, b, l;
+    for (int i = 0; i < r; i++) {
+        scanf("%d%d%d", &a, &b, &l);
+        if (G[a].find(b) == G[a].end() || G[a][b] > l) {
+            G[a][b] = G[b][a] = l;
+        }
+    }
+    for (int i = 0; i < p; i++) {
+        scanf("%d%d%d", &a, &b, &l);
+        if (G[a].find(b) == G[a].end() || G[a][b] > l) {
+            G[a][b] = l;
+        }
+    }
+    spfa(s);
+    for (int i = 1; i <= t; i++) {
+        if (dist[i] == oo) {
+            printf("NO PATH\n");
+        } else {
+            printf("%d\n", dist[i]);
+        }
+    }
     return 0;
 }

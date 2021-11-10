@@ -79,3 +79,5 @@ add_executable(combination 算法优化/全排列优化_二进制法.cpp 算法�
 #add_executable(tool 算法优化/tool.h)
 add_executable(NOIP2002 算法优化/题解/NOIP2002产生数.cpp)
 add_executable(addBigNum 算法优化/高精度加法.cpp)
+add_executable(spfa 算法优化/spfa解决负环图最短路径.cpp)
+add_executable(spfaLQB 算法优化/题解/蓝桥杯spfa道路与航道.cpp)
