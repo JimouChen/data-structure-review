@@ -73,6 +73,7 @@ void bubbleSort(vector<int> &nums) {
                 nums[i] = nums[j];
                 nums[j] = temp;
             }
+        if (!isExchange)return;
     }
 
 }
