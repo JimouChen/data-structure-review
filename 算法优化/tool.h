@@ -43,7 +43,7 @@ void combination(vector<ll> &t, ll k) {
     for (ll i = 0; i < k; ++i)
         vec[i] = 1;
 
-    save(vec, t);
+    saveRes(vec, t);
 
     for (ll i = 0; i < total - 1; ++i) {
         if (vec[i] == 1 && vec[i + 1] == 0) {
@@ -89,6 +89,19 @@ string addBigNum(string &sa, string &sb) {
         res = res.substr(1, res.size() - 1);
 
     return res;
+}
+
+//用打表的求C(n, m) =C(n-1,m-1)+C(n-1,m)，n<=10,000，dp打表
+ll p = 1000000007;
+ll dpCombination(ll n, ll m) {
+    vector<vector<ll>> c(n + 1, vector<ll>(n + 1));
+    for (int i = 0; i < n + 1; ++i)
+        c[i][0] = 1;
+
+    for (int i = 1; i <= n; ++i)
+        for (int j = 1; j <= m; ++j)
+            c[i][j] = ((c[i - 1][j - 1]) % p + (c[i - 1][j]) % p) % p;
+    return c[n][m];
 }
 
 #endif //DATA_STRUCTURE_REVIEW_TOOL_H

@@ -133,9 +133,9 @@ int findPosition(int nums[], int low, int high) {
     //设置排序区间的第一个数是基准数
     int firstNum = nums[low];
     while (low < high) {
-        while (low < high && nums[high] > firstNum) --high;//跳出循环时说明找到一个比基准数小的数
+        while (low < high && nums[high] >= firstNum) --high;//跳出循环时说明找到一个比基准数小的数
         nums[low] = nums[high];
-        while (low < high && nums[low] < firstNum) ++low;
+        while (low < high && nums[low] <= firstNum) ++low;
         nums[high] = nums[low];
     }
     //跳出循环时候，此时low = high就是基准数正确的位置
