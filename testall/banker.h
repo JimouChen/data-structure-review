@@ -25,7 +25,8 @@ bool isSafety(vector<vector<int>> maxSource, vector<vector<int>> allocation, vec
         for (int j = 0; j < maxSource[0].size(); ++j)
             need[i][j] = maxSource[i][j] - allocation[i][j];
 
-    int cnt = int(pow(need.size(), 3));
+    int cnt = need.size();
+//    int cnt = int(pow(need.size(), 3));
     //判断剩下的资源够不够进程用，够的话就加到安全序列
     while (cnt--) {
         for (int i = 0; i < need.size(); ++i) {
@@ -167,7 +168,7 @@ void testBankerAl() {
             {7, 5, 3},
             {3, 2, 2},
             {9, 0, 2},
-            {2, 2, 2},
+            {2, 2, 22},
             {4, 3, 3}
     };
     vector<vector<int>> allocation = {
